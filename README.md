@@ -9,9 +9,10 @@ A browser-based piano improvisation trainer. You pick a key and a chord progress
 **Live:** https://avisalmon.github.io/Improv/
 
 ## Features
+- 9 styles, each with its own drum groove, bass line and comping rhythm: Pop, Rock, Ballad, Jazz swing (walking bass), Bossa nova, Blues shuffle, Funk, Reggae one-drop and Waltz in 3/4. Choosing a style also sets its tempo and instruments.
 - 7 progressions: pop I–V–vi–IV, jazz ii–V–I, 12-bar blues, minor, Dorian vamp, Andalusian, funk vamp
 - 8 scales, plus a practice tip for each one
-- Real recorded instruments: Salamander grand piano for you, a choice of piano, electric piano, strings or organ for the chords, upright or electric bass, and an acoustic drum kit (groove, light or swing)
+- Real recorded instruments: Salamander grand piano for you, a choice of piano, electric piano, strings or organ for the chords, upright or electric bass, and an acoustic drum kit
 - Mixer with volume and mute for your piano, chords, bass, drums, reverb and master. Settings are remembered in your browser.
 - Touch velocity: tapping lower on a key plays louder
 - Tempo 50–180 BPM

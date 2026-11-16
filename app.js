@@ -62,7 +62,51 @@
   };
   const CHORD_INSTR = ['piano', 'epiano', 'strings', 'organ'];
   const BASS_INSTR = ['upright', 'ebass'];
-  const DRUM_PATTERNS = { groove: 'Groove', light: 'Light (hats)', swing: 'Swing (hats)', off: 'Off' };
+  // ---------- Styles ----------
+  // sp = steps per beat (4 = 16ths, 3 = triplets → swing feel), bpb = beats per bar.
+  // Drum strings: one char per step, '.' = rest, '1'..'9' = velocity.
+  // Bass: [step, degree, lengthInSteps, velocity]. Degrees: R 3 5 6 b7 8 (chord-aware 3rd),
+  //   A = chromatic approach to the next chord's root.
+  // Comp: [step, lengthInSteps, velocity]. Pad instruments (strings/organ) just hold the bar.
+  const STYLES = {
+    pop: { name: 'Pop', sp: 4, bpb: 4, bpm: 96, chord: 'piano', bassIns: 'ebass',
+      drums: { kick: '9.......9.6.....', snare: '....9.......9...', hat: '6.4.6.4.6.4.6.4.' },
+      bass: [[0, 'R', 3, .9], [6, 'R', 2, .6], [8, '5', 4, .8], [12, '8', 2, .7], [14, '5', 2, .6]],
+      comp: [[0, 4, .45], [6, 2, .3], [8, 4, .4], [12, 3, .3]] },
+    rock: { name: 'Rock', sp: 4, bpb: 4, bpm: 120, chord: 'organ', bassIns: 'ebass',
+      drums: { kick: '9.....7.9.7.....', snare: '....9.......9...', hat: '8.7.8.7.8.7.8.7.' },
+      bass: [[0, 'R', 2, .9], [2, 'R', 2, .7], [4, 'R', 2, .8], [6, 'R', 2, .7], [8, 'R', 2, .9], [10, 'R', 2, .7], [12, '5', 2, .8], [14, '8', 2, .7]],
+      comp: [[0, 6, .45], [8, 6, .45]] },
+    ballad: { name: 'Ballad', sp: 4, bpb: 4, bpm: 68, chord: 'piano', bassIns: 'upright',
+      drums: { kick: '8.......6.......', rim: '....5.......5...', hat: '4.3.4.3.4.3.4.3.' },
+      bass: [[0, 'R', 8, .85], [8, '5', 8, .75]],
+      comp: [[0, 8, .4], [8, 8, .32]] },
+    jazz: { name: 'Jazz swing', sp: 3, bpb: 4, bpm: 140, chord: 'piano', bassIns: 'upright', prog: 'jazz',
+      drums: { ride: '7..7.57..7.5', kick: '2..2..2..2..', hat: '...5.....5..' },
+      bass: [[0, 'R', 3, .9], [3, '3', 3, .75], [6, '5', 3, .8], [9, 'A', 3, .75]],
+      comp: [[0, 2, .4], [5, 2, .35]] },
+    bossa: { name: 'Bossa nova', sp: 4, bpb: 4, bpm: 130, chord: 'epiano', bassIns: 'upright', prog: 'jazz',
+      drums: { kick: '7.....5.7.....5.', rim: '6..6..6...6..6..', hat: '4343434343434343' },
+      bass: [[0, 'R', 5, .9], [6, '5', 2, .7], [8, '5', 5, .85], [14, 'R', 2, .7]],
+      comp: [[0, 2, .35], [3, 2, .3], [6, 3, .32], [10, 2, .3], [13, 3, .32]] },
+    shuffle: { name: 'Blues shuffle', sp: 3, bpb: 4, bpm: 110, chord: 'piano', bassIns: 'ebass', prog: 'blues',
+      drums: { kick: '9.....8.....', snare: '...9.....9..', hat: '7.47.47.47.4' },
+      bass: [[0, 'R', 2, .9], [2, 'R', 1, .6], [3, '3', 2, .8], [5, '3', 1, .6], [6, '5', 2, .85], [8, '5', 1, .6], [9, '6', 2, .8], [11, 'b7', 1, .65]],
+      comp: [[2, 1, .3], [3, 2, .4], [8, 1, .3], [9, 2, .4]] },
+    funk: { name: 'Funk', sp: 4, bpb: 4, bpm: 100, chord: 'epiano', bassIns: 'ebass', prog: 'funk',
+      drums: { kick: '9.....7.9.....6.', snare: '....9..3.3..9..3', hat: '6363636363636363' },
+      bass: [[0, 'R', 1, .95], [3, '8', 1, .7], [6, 'R', 1, .8], [7, 'b7', 1, .6], [10, '5', 1, .75], [12, 'R', 1, .85], [14, '8', 1, .65]],
+      comp: [[2, 1, .38], [6, 1, .32], [11, 1, .38], [14, 1, .32]] },
+    reggae: { name: 'Reggae (one drop)', sp: 4, bpb: 4, bpm: 76, chord: 'organ', bassIns: 'ebass',
+      drums: { kick: '........9.......', rim: '........8.......', hat: '5.3.5.3.5.3.5.3.' },
+      bass: [[0, 'R', 4, .9], [6, '5', 2, .7], [8, 'R', 3, .85], [12, '3', 2, .7], [14, '5', 2, .65]],
+      comp: [[4, 1, .4], [12, 1, .4]], skank: true },
+    waltz: { name: 'Waltz (3/4)', sp: 4, bpb: 3, bpm: 120, chord: 'piano', bassIns: 'upright',
+      drums: { kick: '7...........', hat: '5...4...4...' },
+      bass: [[0, 'R', 4, .9]],
+      comp: [[4, 3, .35], [8, 3, .32]] },
+  };
+  const DEG = { R: 0, '5': 7, '6': 9, b7: 10, '8': 12 };
   const noteToMidi = (n) => { const m = n.match(/^([A-G][sb]?)(\d)$/); return 12 * (+m[2] + 1) + PC[m[1]]; };
 
   const AC = window.AudioContext || window.webkitAudioContext;
@@ -127,7 +171,7 @@
     bus[c.id] = g;
   });
 
-  const settings = { chordInstr: 'piano', bassInstr: 'upright', drums: 'groove', mix: {} };
+  const settings = { style: 'pop', chordInstr: 'piano', bassInstr: 'ebass', mix: {} };
   try { Object.assign(settings, JSON.parse(localStorage.getItem('improv-settings') || '{}')); } catch (e) {}
   const save = () => { try { localStorage.setItem('improv-settings', JSON.stringify(settings)); } catch (e) {} };
   const curve = (v) => v * v * 1.6; // perceptual slider → gain
@@ -161,20 +205,27 @@
     h.g.gain.setTargetAtTime(0, t, h.rel / 4);
     h.src.stop(t + h.rel * 2 + 0.05);
   }
+  // kick / snare / hat are raw samples; rim and ride are derived from snare and hat
+  const DRUM_VOICE = {
+    kick: ['kick', 1, 0], snare: ['snare', 1, 0], hat: ['hihat', 1, 0],
+    rim: ['snare', 1.9, 0.07], ride: ['hihat', 0.62, 0],
+  };
   function drum(name, time, vel) {
     if (!drumBufs) return;
-    const s = ctx.createBufferSource(); s.buffer = drumBufs[name];
-    const g = ctx.createGain(); g.gain.value = vel;
+    const [buf, rate, cut] = DRUM_VOICE[name];
+    const s = ctx.createBufferSource(); s.buffer = drumBufs[buf]; s.playbackRate.value = rate;
+    const g = ctx.createGain(); g.gain.setValueAtTime(vel, time);
+    if (cut) g.gain.setTargetAtTime(0, time + cut * 0.3, cut / 3);
     s.connect(g); g.connect(bus.drums); s.start(time);
   }
 
-  const BEATS = 4;
+  let BEATS = 4;
   const LOW = 48, HIGH = 84; // C3..C6 on screen
 
   const $ = (id) => document.getElementById(id);
   const ui = {
     key: $('key'), prog: $('prog'), scale: $('scale'), bpm: $('bpm'), bpmOut: $('bpmOut'),
-    play: $('play'), names: $('names'), mixer: $('mixer'),
+    play: $('play'), names: $('names'), mixer: $('mixer'), style: $('style'),
     now: $('chordNow'), next: $('chordNext'), beats: $('beats'),
     kb: $('keyboard'), tip: $('tip'), progline: $('progline'),
   };
@@ -185,13 +236,20 @@
   KEY_NAMES.forEach((n, i) => ui.key.add(new Option(n, i)));
   Object.entries(PROGS).forEach(([k, p]) => ui.prog.add(new Option(p.name, k)));
   Object.entries(SCALES).forEach(([k, s]) => ui.scale.add(new Option(s.name, k)));
-  for (let i = 0; i < BEATS; i++) ui.beats.appendChild(document.createElement('i'));
+  Object.entries(STYLES).forEach(([k, s]) => ui.style.add(new Option(s.name, k)));
+  if (!STYLES[settings.style]) settings.style = 'pop';
+  function buildBeats() {
+    BEATS = STYLES[settings.style].bpb;
+    ui.beats.innerHTML = '';
+    for (let i = 0; i < BEATS; i++) ui.beats.appendChild(document.createElement('i'));
+  }
+  buildBeats();
 
+  const instrSel = {};
   function buildMixer() {
     const extra = {
       chords: ['chordInstr', CHORD_INSTR.map((k) => [k, INSTR[k].label])],
       bass: ['bassInstr', BASS_INSTR.map((k) => [k, INSTR[k].label])],
-      drums: ['drums', Object.entries(DRUM_PATTERNS)],
     };
     CHANNELS.forEach((c) => {
       const m = settings.mix[c.id] = Object.assign({ vol: c.vol, mute: false }, settings.mix[c.id]);
@@ -203,6 +261,7 @@
         const sel = document.createElement('select');
         opts.forEach(([v, l]) => sel.add(new Option(l, v)));
         sel.value = settings[key];
+        instrSel[key] = sel;
         sel.onchange = () => {
           settings[key] = sel.value; save();
           if (INSTR[sel.value]) loadInstrument(sel.value);
@@ -293,8 +352,19 @@
     const p = PROGS[state.prog];
     state.scale = p.scale; ui.scale.value = p.scale;
     state.key = p.key; ui.key.value = p.key;
-    state.chordIdx = 0; beat = 0;
+    state.chordIdx = 0; step = 0;
     fullRender();
+  };
+  function setBpm(v) { state.bpm = v; ui.bpm.value = v; ui.bpmOut.textContent = v; }
+  ui.style.onchange = () => {
+    const S = STYLES[ui.style.value];
+    settings.style = ui.style.value;
+    settings.chordInstr = S.chord; instrSel.chordInstr.value = S.chord; loadInstrument(S.chord);
+    settings.bassInstr = S.bassIns; instrSel.bassInstr.value = S.bassIns; loadInstrument(S.bassIns);
+    setBpm(S.bpm);
+    if (S.prog && S.prog !== state.prog) { ui.prog.value = S.prog; ui.prog.onchange(); }
+    buildBeats();
+    step = 0; save();
   };
   ui.bpm.oninput = () => { state.bpm = +ui.bpm.value; ui.bpmOut.textContent = state.bpm; };
   ui.names.onchange = () => document.body.classList.toggle('shownames', ui.names.checked);
@@ -316,55 +386,55 @@
     keyEls[m] && keyEls[m].classList.remove('down');
   }
 
-  // ---------- Backing scheduler ----------
-  let beat = 0, nextTime = 0, timer = null;
+  // ---------- Backing scheduler (step sequencer) ----------
+  let step = 0, nextTime = 0, timer = null;
   const visQueue = [];
   function voicing(c) {
     const root = 48 + ((state.key + c[0]) % 12);
     return QUAL[c[1]].iv.map((i) => { let m = root + i; if (m < 52) m += 12; return m; });
   }
-  function comp(c, b, t, spb) {
+  const bassRoot = (c) => 33 + (((state.key + c[0]) % 12) - 9 + 12) % 12; // A1..G#2
+  function bassNote(deg, c, next) {
+    const r = bassRoot(c);
+    if (deg === 'A') { const t = bassRoot(next); return t - 1 >= 28 ? t - 1 : t + 1; }
+    if (deg === '3') return r + QUAL[c[1]].iv[1];
+    return r + DEG[deg];
+  }
+  function playStep(st, c, next, s, t, sd) {
+    const S = STYLES[settings.style];
+    // drums
+    for (const [voice, pat] of Object.entries(S.drums)) {
+      const ch = pat[s];
+      if (ch && ch !== '.') drum(voice, t, +ch / 9);
+    }
+    // bass
+    for (const [at, deg, len, vel] of S.bass) {
+      if (at === s) playSample(settings.bassInstr, bassNote(deg, c, next), t, vel, bus.bass, len * sd * 0.92);
+    }
+    // chords
     const ins = settings.chordInstr;
     const notes = voicing(c);
-    if (INSTR[ins].pad) {
-      if (b === 0) notes.forEach((m) => playSample(ins, m, t, 0.32, bus.chords, spb * BEATS - 0.02));
-    } else if (b === 0 || b === 2) {
-      notes.forEach((m, i) => playSample(ins, m, t + i * 0.008, b === 0 ? 0.42 : 0.32, bus.chords, spb * 1.7));
+    if (INSTR[ins].pad && !S.skank) {
+      if (s === 0) notes.forEach((m) => playSample(ins, m, t, 0.32, bus.chords, sd * S.sp * S.bpb - 0.02));
+    } else {
+      for (const [at, len, vel] of S.comp) {
+        if (at === s) notes.forEach((m, i) => playSample(ins, m, t + i * 0.006, vel, bus.chords, len * sd * 0.9));
+      }
     }
-  }
-  function bassLine(c, b, t, spb) {
-    const r = 33 + (((state.key + c[0]) % 12) - 9 + 12) % 12; // A1..G#2
-    if (b === 0) playSample(settings.bassInstr, r, t, 0.9, bus.bass, spb * 1.8);
-    if (b === 2) playSample(settings.bassInstr, r + 7, t, 0.8, bus.bass, spb * 1.8);
-  }
-  function drums(b, t, spb) {
-    const p = settings.drums;
-    if (p === 'off') return;
-    if (p === 'swing') {
-      drum('hihat', t, b % 2 ? 0.5 : 0.35);
-      if (b % 2) drum('hihat', t + spb * 2 / 3, 0.25);
-      if (b === 0) drum('kick', t, 0.35);
-      return;
-    }
-    drum('hihat', t, b === 0 ? 0.55 : 0.4);
-    drum('hihat', t + spb / 2, 0.25);
-    if (p === 'light') { if (b === 0) drum('kick', t, 0.4); return; }
-    if (b === 0 || b === 2) drum('kick', t, 0.9);
-    if (b === 2) drum('kick', t + spb / 2, 0.5);
-    if (b === 1 || b === 3) drum('snare', t, 0.7);
   }
   function schedule() {
-    const spb = 60 / state.bpm;
+    const S = STYLES[settings.style];
+    const sd = 60 / state.bpm / S.sp; // seconds per step
+    const barSteps = S.sp * S.bpb;
     while (nextTime < ctx.currentTime + 0.15) {
       const p = PROGS[state.prog];
-      const ci = Math.floor(beat / BEATS) % p.chords.length;
-      const b = beat % BEATS;
-      const c = p.chords[ci];
-      comp(c, b, nextTime, spb);
-      bassLine(c, b, nextTime, spb);
-      drums(b, nextTime, spb);
-      visQueue.push({ t: nextTime, ci, b });
-      nextTime += spb; beat++;
+      const bar = Math.floor(step / barSteps);
+      const s = step % barSteps;
+      const ci = bar % p.chords.length;
+      const c = p.chords[ci], next = p.chords[(ci + 1) % p.chords.length];
+      playStep(step, c, next, s, nextTime, sd);
+      if (s % S.sp === 0) visQueue.push({ t: nextTime, ci, b: s / S.sp });
+      nextTime += sd; step++;
     }
   }
   function drawLoop() {
@@ -378,7 +448,7 @@
   }
   function start() {
     unlock();
-    state.playing = true; beat = 0; state.chordIdx = 0; visQueue.length = 0;
+    state.playing = true; step = 0; state.chordIdx = 0; visQueue.length = 0;
     nextTime = ctx.currentTime + 0.1;
     renderHighlights();
     timer = setInterval(schedule, 25); schedule();
@@ -441,6 +511,7 @@
   if (innerWidth < 700) $('mixerBox').open = false; // keep the keyboard close on phones
   let ready = false;
   ui.prog.value = state.prog; ui.scale.value = state.scale; ui.key.value = state.key;
+  ui.style.value = settings.style; setBpm(STYLES[settings.style].bpm);
   fullRender();
   requestAnimationFrame(() => {
     const mc = keyEls[60]; if (mc) ui.kb.parentElement.scrollLeft = mc.offsetLeft - 20;
