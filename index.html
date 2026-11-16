@@ -28,12 +28,15 @@
       <input id="bpm" type="range" min="50" max="180" value="90">
     </label>
     <div class="toggles">
-      <label class="chk"><input type="checkbox" id="drums" checked> Hi-hat</label>
-      <label class="chk"><input type="checkbox" id="bass" checked> Bass</label>
       <label class="chk"><input type="checkbox" id="names"> Note names</label>
     </div>
-    <button id="play" class="play">▶ Play backing</button>
+    <button id="play" class="play" disabled>Loading sounds…</button>
   </section>
+
+  <details class="mixer card" id="mixerBox" open>
+    <summary>Mixer</summary>
+    <div class="mix" id="mixer"></div>
+  </details>
 
   <section class="now card">
     <div class="chordbox">
@@ -64,7 +67,8 @@
   <p class="help">Play by tapping the keys, or use your computer keyboard: <kbd>A</kbd>–<kbd>;</kbd> for white keys and <kbd>W E T Y U O P</kbd> for black keys. <kbd>Z</kbd>/<kbd>X</kbd> shift the octave. <kbd>Space</kbd> starts and stops the backing.</p>
 </main>
 
-<footer>Improvise · open source on <a href="https://github.com/avisalmon/Improv">GitHub</a></footer>
+<footer>Improvise · open source on <a href="https://github.com/avisalmon/Improv">GitHub</a><br>
+<small>Piano: Salamander Grand Piano by Alexander Holm (CC-BY 3.0). Other instruments: FluidR3 GM soundfont via gleitz/midi-js-soundfonts (CC-BY 3.0). Drums: Tone.js audio samples.</small></footer>
 
 <script src="app.js"></script>
 </body>

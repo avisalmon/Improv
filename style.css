@@ -29,6 +29,19 @@ select { background: #262938; color: var(--text); border: 1px solid var(--line);
 .controls .chk { flex-direction: row; align-items: center; gap: 6px; color: var(--text); font-size: 14px; }
 .play { background: var(--accent); color: #1a1a1a; border: 0; border-radius: 10px; padding: 12px; font-size: 16px; font-weight: 700; cursor: pointer; }
 .play.on { background: #e5484d; color: #fff; }
+.play:disabled { background: #3a3d4f; color: var(--muted); cursor: wait; }
+
+.mixer summary { cursor: pointer; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
+.mix { display: grid; gap: 10px; margin-top: 12px; }
+.ch { display: grid; grid-template-columns: 110px 1fr 46px; gap: 10px; align-items: center; }
+.ch .nm { font-weight: 600; font-size: 14px; }
+.ch .nm select { display: block; width: 100%; margin-top: 4px; padding: 4px 6px; font-size: 13px; }
+.ch input[type=range] { accent-color: var(--accent); }
+.ch .mute { background: #262938; color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 6px 0; font-weight: 700; cursor: pointer; }
+.ch .mute.on { background: #e5484d; border-color: #e5484d; color: #fff; }
+.ch.muted input[type=range] { opacity: .35; }
+.ch.master { border-top: 1px solid var(--line); padding-top: 10px; }
+footer small { display: block; margin-top: 6px; font-size: 11px; opacity: .8; }
 
 .now { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .chordbox .lbl { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }

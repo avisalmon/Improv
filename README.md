@@ -11,8 +11,16 @@ A browser-based piano improvisation trainer. You pick a key and a chord progress
 ## Features
 - 7 progressions: pop I–V–vi–IV, jazz ii–V–I, 12-bar blues, minor, Dorian vamp, Andalusian, funk vamp
 - 8 scales, plus a practice tip for each one
-- Backing track with pad chords, bass and hi-hat, tempo 50–180 BPM
+- Real recorded instruments: Salamander grand piano for you, a choice of piano, electric piano, strings or organ for the chords, upright or electric bass, and an acoustic drum kit (groove, light or swing)
+- Mixer with volume and mute for your piano, chords, bass, drums, reverb and master. Settings are remembered in your browser.
+- Touch velocity: tapping lower on a key plays louder
+- Tempo 50–180 BPM
 - Play by touch or mouse (you can slide across the keys), or with the computer keyboard (`A`–`;`, `Z`/`X` to change octave, `Space` to start or stop the backing)
 
 ## Tech
-Plain HTML, CSS and JS using Web Audio, with no build step and no dependencies. GitHub Pages serves it from the root of `main`, and every push to `main` redeploys the site.
+Plain HTML, CSS and JS using Web Audio, with no build step and no dependencies. The samples (about 3.6 MB) are in `samples/`.
+
+## Credits
+- Piano: Salamander Grand Piano V2 by Alexander Holm, CC-BY 3.0 (via Tone.js audio)
+- Electric piano, strings, organ and basses: FluidR3 GM soundfont, CC-BY 3.0 (via gleitz/midi-js-soundfonts)
+- Drums: Tone.js audio acoustic kit GitHub Pages serves it from the root of `main`, and every push to `main` redeploys the site.
