@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Improvise — piano improvisation trainer</title>
+<meta name="description" content="Pick a key and a progression, hear the backing, and improvise on a keyboard that lights up the right notes.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Improvise</h1>
+  <p class="sub">Choose a key and a groove. The backing plays, and the keyboard shows which notes fit.</p>
+</header>
+
+<main>
+  <section class="controls card">
+    <label>Key
+      <select id="key"></select>
+    </label>
+    <label>Progression
+      <select id="prog"></select>
+    </label>
+    <label>Scale
+      <select id="scale"></select>
+    </label>
+    <label class="tempo"><span>Tempo <output id="bpmOut">90</output> BPM</span>
+      <input id="bpm" type="range" min="50" max="180" value="90">
+    </label>
+    <div class="toggles">
+      <label class="chk"><input type="checkbox" id="drums" checked> Hi-hat</label>
+      <label class="chk"><input type="checkbox" id="bass" checked> Bass</label>
+      <label class="chk"><input type="checkbox" id="names"> Note names</label>
+    </div>
+    <button id="play" class="play">▶ Play backing</button>
+  </section>
+
+  <section class="now card">
+    <div class="chordbox">
+      <div class="lbl">Now</div>
+      <div id="chordNow" class="chord">—</div>
+    </div>
+    <div class="beats" id="beats"></div>
+    <div class="chordbox next">
+      <div class="lbl">Next</div>
+      <div id="chordNext" class="chord small">—</div>
+    </div>
+  </section>
+
+  <section class="progline" id="progline"></section>
+
+  <section class="kbwrap card">
+    <div id="keyboard" class="keyboard" aria-label="Piano keyboard"></div>
+  </section>
+
+  <section class="legend">
+    <span><i class="sw tone"></i>Chord tone (safe landing note)</span>
+    <span><i class="sw scale"></i>In scale</span>
+    <span><i class="sw root"></i>Key root</span>
+  </section>
+
+  <section class="tip card" id="tip"></section>
+
+  <p class="help">Play by tapping the keys, or use your computer keyboard: <kbd>A</kbd>–<kbd>;</kbd> for white keys and <kbd>W E T Y U O P</kbd> for black keys. <kbd>Z</kbd>/<kbd>X</kbd> shift the octave. <kbd>Space</kbd> starts and stops the backing.</p>
+</main>
+
+<footer>Improvise · open source on <a href="https://github.com/avisalmon/Improv">GitHub</a></footer>
+
+<script src="app.js"></script>
+</body>
+</html>
