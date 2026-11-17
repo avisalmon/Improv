@@ -28,6 +28,7 @@
     '7': { iv: [0, 4, 7, 10], sfx: '7' },
     m7: { iv: [0, 3, 7, 10], sfx: 'm7' },
     maj7: { iv: [0, 4, 7, 11], sfx: 'maj7' },
+    dim: { iv: [0, 3, 6], sfx: 'dim' },
   };
 
   // chord = [semitones above key, quality]; every chord lasts one bar of 4 beats
@@ -44,6 +45,8 @@
       chords: [[0, 'm7'], [5, '7']] },
     andal:  { name: 'Andalusian  i–VII–VI–V', scale: 'harmminor', key: 4,
       chords: [[0, 'min'], [10, 'maj'], [8, 'maj'], [7, 'maj']] },
+    fifths: { name: 'Circle of fifths (minor)', scale: 'minor', key: 9,
+      chords: [[0, 'min'], [0, 'min'], [0, 'min'], [0, 'min'], [5, 'min'], [10, 'maj'], [3, 'maj'], [8, 'maj'], [2, 'dim'], [7, '7']] },
     funk:   { name: 'Funk vamp  I7', scale: 'mixolydian', key: 7,
       chords: [[0, '7']] },
   };
