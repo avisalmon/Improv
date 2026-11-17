@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Improvise — piano improvisation trainer</title>
+<title>Improvise — improvisation trainer & MIDI studio</title>
 <meta name="description" content="Pick a key and a progression, hear the backing, and improvise on a keyboard that lights up the right notes.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
   <h1>Improvise</h1>
-  <p class="sub">Choose a key and a groove. The backing plays, and the keyboard shows which notes fit.</p>
+  <p class="sub">Choose a key and a groove. The backing plays, and the keyboard shows which notes fit. Then record your own song, one track at a time.</p>
 </header>
 
 <main>
@@ -59,6 +59,42 @@
     <div id="keyboard" class="keyboard" aria-label="Piano keyboard"></div>
   </section>
 
+  <section class="studio card" id="studio">
+    <div class="studio-head">
+      <h2>Studio</h2>
+      <div class="proj">
+        <select id="projSel" aria-label="Song"></select>
+        <input id="projName" aria-label="Song name" placeholder="Song name">
+        <button id="projNew" class="btn">+ New song</button>
+        <button id="projDel" class="btn ghost">Delete song</button>
+      </div>
+    </div>
+    <div class="rec-row">
+      <label>Record with <select id="recInstr"></select></label>
+      <label>Song length <select id="passes"></select></label>
+      <label class="chk"><input type="checkbox" id="countIn"> 1-bar count-in</label>
+      <label class="chk"><input type="checkbox" id="click"> Click while recording</label>
+      <button id="recBtn" class="rec" disabled>● Record new track</button>
+    </div>
+    <div class="midi-row">
+      <span id="midiStatus">MIDI keyboard not connected.</span>
+      <button id="midiBtn" class="btn">Connect MIDI keyboard</button>
+      <label class="lat">Timing offset <output id="latOut">0</output> ms
+        <input type="range" id="lat" min="-100" max="200" step="5" value="0"></label>
+    </div>
+    <div id="studioMsg" class="msg" role="status"></div>
+    <div id="tracks" class="tracks"></div>
+    <div class="export-row">
+      <label class="chk"><input type="checkbox" id="incBacking"> Include backing in export</label>
+      <button id="expWav" class="btn">⬇ WAV audio</button>
+      <button id="expMidi" class="btn">⬇ MIDI file</button>
+      <button id="expProj" class="btn ghost">⬇ Backup song</button>
+      <button id="impProj" class="btn ghost">⬆ Import song</button>
+      <input type="file" id="impFile" accept=".json,application/json" hidden>
+    </div>
+    <p class="hint">Songs are saved automatically in this browser on this computer. Use <b>Backup song</b> to keep a copy or move it to another computer. Changing the key or progression later does not transpose tracks you already recorded.</p>
+  </section>
+
   <section class="legend">
     <span><i class="sw tone"></i>Chord tone (safe landing note)</span>
     <span><i class="sw scale"></i>In scale</span>
@@ -67,12 +103,12 @@
 
   <section class="tip card" id="tip"></section>
 
-  <p class="help">Play by tapping the keys, or use your computer keyboard: <kbd>A</kbd>–<kbd>;</kbd> for white keys and <kbd>W E T Y U O P</kbd> for black keys. <kbd>Z</kbd>/<kbd>X</kbd> shift the octave. <kbd>Space</kbd> starts and stops the backing.</p>
+  <p class="help">Play by tapping the keys, or use your computer keyboard: <kbd>A</kbd>–<kbd>;</kbd> for white keys and <kbd>W E T Y U O P</kbd> for black keys. <kbd>Z</kbd>/<kbd>X</kbd> shift the octave. <kbd>Space</kbd> plays and stops, and <kbd>Enter</kbd> starts recording a new track. A MIDI keyboard with a sustain pedal works too (Chrome or Edge).</p>
 </main>
 
 <footer>Improvise · open source on <a href="https://github.com/avisalmon/Improv">GitHub</a><br>
-<small>Piano: Salamander Grand Piano by Alexander Holm (CC-BY 3.0). Other instruments: FluidR3 GM soundfont via gleitz/midi-js-soundfonts (CC-BY 3.0). Drums: Tone.js audio samples.</small></footer>
+<small>Piano: Salamander Grand Piano by Alexander Holm (CC-BY 3.0). Other instruments: FluidR3 GM soundfont via gleitz/midi-js-soundfonts (CC-BY 3.0). Drums: Tone.js audio samples and the OLPC Berklee sound library (CC-BY 3.0).</small></footer>
 
-<script src="app.js"></script>
+<script type="module" src="js/app.js"></script>
 </body>
 </html>

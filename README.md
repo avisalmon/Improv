@@ -1,27 +1,39 @@
 # Improvise 🎹
 
-A browser-based piano improvisation trainer. You pick a key and a chord progression, the backing track plays, and the on-screen keyboard lights up the notes that fit:
+An improvisation trainer and multitrack MIDI studio that runs in the browser.
+
+**Live:** https://avisalmon.github.io/Improv/
+
+## Practice
+You pick a style, key and progression, a backing band plays, and the keyboard marks which notes fit:
 
 - **Orange:** tones of the current chord. These are safe notes to land on.
 - **Blue:** notes in the chosen scale.
 - **Red ring:** the root of the key.
 
-**Live:** https://avisalmon.github.io/Improv/
+There are 9 styles (Pop, Rock, Ballad, Jazz swing, Bossa nova, Blues shuffle, Funk, Reggae and Waltz), 8 progressions (including a minor circle of fifths) and 8 scales, each scale with a practice tip. A mixer sets the volume of the live input, chords, bass, drums, reverb and master.
 
-## Features
-- 9 styles, each with its own drum groove, bass line and comping rhythm: Pop, Rock, Ballad, Jazz swing (walking bass), Bossa nova, Blues shuffle, Funk, Reggae one-drop and Waltz in 3/4. Choosing a style also sets its tempo and instruments.
-- 8 progressions: circle of fifths in minor (Am ×4, Dm, G, C, F, Bdim, E7), pop I–V–vi–IV, jazz ii–V–I, 12-bar blues, minor, Dorian vamp, Andalusian, funk vamp
-- 8 scales, plus a practice tip for each one
-- Real recorded instruments: Salamander grand piano for you, a choice of piano, electric piano, strings or organ for the chords, upright or electric bass, and an acoustic drum kit
-- Mixer with volume and mute for your piano, chords, bass, drums, reverb and master. Settings are remembered in your browser.
-- Touch velocity: tapping lower on a key plays louder
-- Tempo 50–180 BPM
-- Play by touch or mouse (you can slide across the keys), or with the computer keyboard (`A`–`;`, `Z`/`X` to change octave, `Space` to start or stop the backing)
+## Studio: record your own song
+1. Connect a MIDI keyboard (Chrome or Edge), or use the on-screen keys or your computer keyboard.
+2. Under **Record with**, choose an instrument: grand piano, electric piano, organ, strings, vibraphone, classical or electric guitar, alto or tenor sax, trumpet, flute, synth lead, upright or electric bass, or drum kit. In drum mode the keys follow the General MIDI drum map.
+3. Press **● Record new track** (or Enter). After a one-bar count-in you record once through the song over the backing, with the earlier tracks playing along.
+4. Repeat with other instruments. Each track has a name, instrument, volume, **M**ute, **S**olo, **Q**uantize, **⟲** re-record and **✕** delete.
+5. Export a **WAV** audio mix or a multitrack **MIDI** file, with or without the backing.
+
+The sustain pedal is supported. The **Timing offset** slider compensates if your recorded notes land slightly early or late.
+
+Songs are saved automatically in the browser (IndexedDB). Use **Backup song** and **Import song** to keep copies or move songs between computers.
 
 ## Tech
-Plain HTML, CSS and JS using Web Audio, with no build step and no dependencies. The samples (about 3.6 MB) are in `samples/`.
+Plain HTML, CSS and ES modules on Web Audio and Web MIDI, with no build step and no dependencies. GitHub Pages serves it from the root of `main`.
+
+- `js/music.js`: theory, styles and the backing-pattern generator (timed in beats)
+- `js/audio.js`: sample loading, voices, mixer graph (shared by live playback and offline WAV rendering)
+- `js/export.js`: Standard MIDI File writer and WAV encoder
+- `js/store.js`: IndexedDB song storage
+- `js/app.js`: transport, recording, MIDI input and UI
 
 ## Credits
 - Piano: Salamander Grand Piano V2 by Alexander Holm, CC-BY 3.0 (via Tone.js audio)
-- Electric piano, strings, organ and basses: FluidR3 GM soundfont, CC-BY 3.0 (via gleitz/midi-js-soundfonts)
-- Drums: Tone.js audio acoustic kit GitHub Pages serves it from the root of `main`, and every push to `main` redeploys the site.
+- Other instruments: FluidR3 GM soundfont, CC-BY 3.0 (via gleitz/midi-js-soundfonts)
+- Drums: Tone.js audio acoustic kit, and crash, clap and cowbell from the OLPC Berklee sound library (CC-BY 3.0)
